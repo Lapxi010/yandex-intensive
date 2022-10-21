@@ -19,10 +19,42 @@ const config = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
     },
+    target: 'browser',
+    resolve: {
+        extensions: ['.js'],
+        fallback: {
+            "fs": false,
+            "tls": false,
+            "net": false,
+            "path": false,
+            "zlib": false,
+            "http": false,
+            "https": false,
+            "stream": false,
+            "crypto": false,
+            "crypto-browserify": require.resolve('crypto-browserify'),
+        }
+    },
+    devServer:{
+        hot: true,
+        port: 3333
+    },
     module: {
         rules: [
-            // @TODO js rule
-            // @TODO css rule
+            {
+                test: /\.js$/i,
+                exclude: ['/node_modules/'],
+                use: {            
+                    loader: 'babel-loader',
+                    options: {
+                      presets: ['@babel/preset-env', '@babel/preset-react']
+                    }
+                }
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader']
+            }  
         ],
     },
     // @TODO optimizations
