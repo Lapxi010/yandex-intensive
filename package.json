@@ -5,6 +5,7 @@
     "private": true,
     "dependencies": {
         "crypto-browserify": "^3.12.0",
+        "immutable": "^4.1.0",
         "lodash": "^4.17.21",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
@@ -14,15 +15,16 @@
         "react-scripts": "4.0.3",
         "redux": "^4.1.0",
         "redux-observable": "^2.0.0",
-        "rxjs": "^7.1.0"
+        "rxjs": "^7.1.0",
+        "stream-browserify": "^3.0.0",
+        "uuid": "^9.0.0"
     },
     "scripts": {
         "start": "webpack serve --mode development --config ./webpack.config.js ",
-        "build": "echo \"implement me\"",
-        "test": "echo \"implement me\"",
-        "lint:js": "echo \"implement me\"",
-        "lint:css": "echo \"implement me\"",
-        "analyze": "echo \"implement me\"",
+        "build": "webpack --mode production --config ./webpack.config.js",
+        "lint:js": "npx eslint src/**/*.js --fix --ext .js",
+        "lint:css": "npx stylelint src/**/*.css --fix",
+        "analyze": "webpack --json stats.json",
         "validate": "node_modules/.bin/statoscope validate -i stats.json --config=./statoscope.config.js"
     },
     "devDependencies": {
@@ -33,10 +35,20 @@
         "@statoscope/stats-validator-plugin-webpack": "^5.24.0",
         "@statoscope/webpack-plugin": "^5.24.0",
         "babel-loader": "^8.2.5",
+        "babel-plugin-import": "^1.13.5",
+        "babel-plugin-lodash": "^3.3.4",
+        "clean-webpack-plugin": "^4.0.0",
         "css-loader": "^6.7.1",
+        "eslint": "^8.26.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-jsx-a11y": "^6.6.1",
+        "eslint-plugin-react": "^7.31.10",
+        "eslint-plugin-react-hooks": "^4.6.0",
         "html-webpack-plugin": "^5.5.0",
-        "stream-browserify": "^3.0.0",
         "style-loader": "^3.3.1",
+        "stylelint": "^14.14.0",
+        "stylelint-config-standard": "^29.0.0",
         "webpack": "^5.74.0",
         "webpack-cli": "^4.10.0",
         "webpack-dev-server": "^3.11.1"

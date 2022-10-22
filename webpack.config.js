@@ -1,67 +1,93 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StatoscopePlugin = require('@statoscope/webpack-plugin').default;
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const mode = process.env.NODE_ENV
 
 const config = {
     entry: {
+        index: './src/index.js',
         about: './src/pages/About.js',
         home: './src/pages/Home.js',
     },
-    plugins: [
-        new HtmlWebpackPlugin(),
-        new StatoscopePlugin({
-            saveStatsTo: 'stats.json',
-            saveOnlyStats: false,
-            open: false,
-        }),
-    ],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
     },
-    target: 'browser',
-    resolve: {
-        extensions: ['.js'],
-        fallback: {
-            "fs": false,
-            "tls": false,
-            "net": false,
-            "path": false,
-            "zlib": false,
-            "http": false,
-            "https": false,
-            "stream": false,
-            "crypto": false,
-            "crypto-browserify": require.resolve('crypto-browserify'),
-        }
-    },
     devServer:{
+        compress: true,
         hot: true,
-        port: 3333
+        port: 3333,
+    },
+    resolve: {
+        extensions: ['.js', 'json'],
+        fallback: {
+            buffer: require.resolve('buffer'),
+            crypto: require.resolve('crypto-browserify'),
+            stream: false
+        },
+        alias: {
+            'react-is': path.resolve(__dirname, 'node_modules/react-is')
+        }
     },
     module: {
         rules: [
             {
                 test: /\.js$/i,
-                exclude: ['/node_modules/'],
+                exclude: /node_modules/,
                 use: {            
                     loader: 'babel-loader',
                     options: {
-                      presets: ['@babel/preset-env', '@babel/preset-react']
+                     plugins: [
+                        'lodash'
+                     ],
+                     presets: ['@babel/preset-env','@babel/preset-react'],
                     }
                 }
             },
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader']
-            }  
+            }
         ],
     },
-    // @TODO optimizations
-    // @TODO lodash treeshaking
-    // @TODO chunk for lodash
-    // @TODO chunk for runtime
-    // @TODO fallback for crypto
+    plugins: [
+        new HtmlWebpackPlugin(
+            {
+                template: "./public/index.html",
+                favicon: "./public/favicon.ico",
+            }
+        ),
+        new StatoscopePlugin({
+            saveReportTo: './report.html',
+            saveStatsTo: './stats.json',
+            saveOnlyStats: false,
+            open: false,
+        }),
+        new CleanWebpackPlugin()
+    ],
 };
+
+if(mode === 'development'){
+    config.mode = 'development'
+    config.devtool = 'source-map'
+}else{
+    config.mode = 'production'
+    config.optimization={
+        minimize: true,
+        concatenateModules: true,
+        splitChunks: {
+            minChunks: 2,
+            chunks: 'all',
+            minSize: 0,
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                },
+            },
+        },
+    }
+}
 
 module.exports = config;
