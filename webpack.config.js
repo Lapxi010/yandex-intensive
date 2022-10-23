@@ -7,7 +7,10 @@ const mode = process.env.NODE_ENV
 
 const config = {
     entry: {
-        index: './src/index.js',
+        index: {
+            import: './src/index.js',
+            dependOn: ['about', 'home']
+        },
         about: './src/pages/About.js',
         home: './src/pages/Home.js',
     },
@@ -20,6 +23,7 @@ const config = {
         hot: true,
         port: 3333,
     },
+    target: 'web',
     resolve: {
         extensions: ['.js', 'json'],
         fallback: {
@@ -77,6 +81,8 @@ if(mode === 'development'){
     config.optimization={
         minimize: true,
         concatenateModules: true,
+        moduleIds: "deterministic",
+        usedExports: true,
         splitChunks: {
             minChunks: 2,
             chunks: 'all',
@@ -86,6 +92,9 @@ if(mode === 'development'){
                     test: /[\\/]node_modules[\\/]/,
                 },
             },
+        },
+        runtimeChunk: {
+            name: 'runtime',
         },
     }
 }
