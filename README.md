@@ -1,1 +1,1 @@
-# This repozitory create for yandex-intensive
+# This repository create for yandex-intensive
