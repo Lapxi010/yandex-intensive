@@ -1,0 +1,47 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.card__top {
+  display: flex;
+  flex-direction: row;
+  height: 216px;
+}
+
+.card__CardBookWrapper {
+  flex:1;
+  height: 100%;
+  margin-right: 20px;
+}
+
+.card__annotation {
+  flex: 1;
+  height: 100%;
+  padding: 20px;
+  background: #FFFFFF;
+  border-radius: 8px;
+}
+
+.card__annotation__header {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
+}
+
+.card__annotation__text {
+  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
+  line-height: 20px;
+  margin-top: 16px;
+}
+
+.revievs {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
