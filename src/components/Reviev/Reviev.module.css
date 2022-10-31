@@ -1,0 +1,30 @@
+.reviev {
+  width: 100%;
+  padding: 20px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.reviev__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reviev__header__name {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
+}
+
+.reviev__text {
+  margin-top: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
