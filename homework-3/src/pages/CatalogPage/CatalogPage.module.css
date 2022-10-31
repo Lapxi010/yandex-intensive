@@ -17,25 +17,6 @@
   flex-direction: column;
 }
 
-.categories__item {
-  margin-bottom: 24px;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 22px;
-}
-
-.categories__itemActive {
-   margin-bottom: 24px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 22px;
-}
-
-.categories__link {
-  text-decoration: none;
-  color: #000000;
-}
-
 .books {
   width: 895px;
   min-height: 876px;
