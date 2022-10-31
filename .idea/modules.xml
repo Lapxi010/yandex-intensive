@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/yandex-intensive.iml" filepath="$PROJECT_DIR$/.idea/yandex-intensive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/shri_simple_template.iml" filepath="$PROJECT_DIR$/.idea/shri_simple_template.iml" />
     </modules>
   </component>
 </project>

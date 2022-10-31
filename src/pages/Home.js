@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { TodoList } from '../components/TodoList';
 
 export function Home() {
@@ -6,6 +6,7 @@ export function Home() {
     <>
       <h1 data-testid="page-title">Home</h1>
       <p>This is the list.</p>
+      <p>Have a great day!</p>
       <TodoList />
     </>
   );
