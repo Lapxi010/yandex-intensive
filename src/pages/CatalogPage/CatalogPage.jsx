@@ -1,17 +1,24 @@
 import React, {useEffect} from "react";
-import {Category} from "../../components/Category/Category.jsx";
 import styles from "./CatalogPage.module.css";
+import {Category} from "../../components/Category/Category.jsx";
+import {CardBook} from "../../components/CardBook/CardBook";
 import {useDispatch, useSelector} from "react-redux";
 import {loadCategoryIfNotExist} from "../../store/category/loadCategoryIfNotExist";
-import {selectActiveCategory, selectCategories} from "../../store/category/selectors";
+import {selectActiveCategory, selectCategories, selectCategoryIsSuccess} from "../../store/category/selectors";
 import {categorySlice} from '../../store/category/index'
 import {loadBooksIfNotExist} from "../../store/books/loadBooksIfNotExist";
-import {BlockCards} from "../../components/BlockCards/BlockCards";
+import {selectBooks, selectBooksIsSuccess} from "../../store/books/selectors";
+import Loading from "../../assets/loading.svg";
+
 
 export const CatalogPage = () => {
     const dispatch = useDispatch();
     const categories = useSelector((state) => selectCategories(state));
     const activeCategory = useSelector((state) => selectActiveCategory(state))
+    const books = useSelector((state) => selectBooks(state))
+    const statusCategory = useSelector((state) => selectCategoryIsSuccess(state))
+    const statusBooks = useSelector((state) => selectBooksIsSuccess(state))
+
     useEffect(() => {
         dispatch(loadCategoryIfNotExist)
     }, []);
@@ -21,6 +28,10 @@ export const CatalogPage = () => {
             dispatch(loadBooksIfNotExist(activeCategory.id))
         }
     }, [activeCategory])
+
+    if (!statusCategory) {
+        return <div className={styles.load}><img className={styles.load__img} src={Loading} alt="loading"/></div>
+    }
 
     return (
         <>
@@ -39,7 +50,25 @@ export const CatalogPage = () => {
                 </ul>
             </aside>
             {
-             activeCategory !== undefined ? <BlockCards/> : <span>Загрузка ...</span>
+                statusBooks || books !== undefined ?
+                 <section className={styles.books}>
+                     {books
+                         .filter((categorie) => categorie.categorie === activeCategory.name)
+                         .map((val) => (
+                             <CardBook
+                                 rating={val.rating}
+                                 author={val.author}
+                                 price={val.price}
+                                 genre={val.genres[0]}
+                                 title={val.title}
+                                 key={val.id}
+                                 id={val.id}
+                                 positionCounter="top"
+                                 isLink={true}
+                             />
+                         ))}
+                 </section>
+                 : <div className={styles.load}><img className={styles.load__img} src={Loading} alt="loading"/></div>
             }
         </>
     );

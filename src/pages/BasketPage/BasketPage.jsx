@@ -1,12 +1,18 @@
-import React, {useState} from 'react'
-import {CardBook} from '../../components/CardBook/CardBook.jsx'
+import React from 'react'
 import styles from './BasketPage.module.css'
+import {CardBook} from '../../components/CardBook/CardBook.jsx'
 import {useSelector} from "react-redux";
 import {selectAllBooks, selectPriceAllBooks} from "../../store/basket/selectors";
 
 export const BasketPage = () => {
     const books = useSelector((state) => selectAllBooks(state))
     const totalPrice = useSelector((state) => selectPriceAllBooks(state))
+
+    if (books.length === 0) {
+        return <div className={styles.books__undefined}>
+            <h1>В корзине ничего нет!</h1>
+        </div>
+    }
 
     return (
         <>
@@ -36,7 +42,8 @@ export const BasketPage = () => {
                         title={val.title}
                         key={val.id}
                         id={val.id}
-                        positionCounter='top'
+                        isLink={true}
+                        positionCounter='bottom'
                     />)
                 }
             </div>

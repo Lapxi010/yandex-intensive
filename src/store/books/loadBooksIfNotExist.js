@@ -2,7 +2,7 @@ import { booksSlice } from "./index.js";
 import {prepareData} from '../utils'
 
 export const loadBooksIfNotExist = (categoryId) => (dispatch, getState) => {
-
+    dispatch(booksSlice.actions.startLoading())
     fetch(`http://localhost:4000/api/books?categorie=${categoryId}`)
         .then((responce) => responce.json())
         .then((books) =>

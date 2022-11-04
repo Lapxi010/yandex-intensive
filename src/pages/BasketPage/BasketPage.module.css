@@ -1,5 +1,5 @@
 .basket {
-  width: max-content;
+  width: 34%;
   background: #FFFFFF;
   border-radius: 8px;
   display: flex;
@@ -46,7 +46,6 @@
 }
 
 .basket__bottom {
-  width: 367px;
   margin-top: 178px;
   display: flex;
   flex-direction: row;
@@ -79,6 +78,15 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.books__undefined {
+  width: 100vw;
+  height: calc(100vh - 118px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px
 }
 
 
