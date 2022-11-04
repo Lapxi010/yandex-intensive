@@ -1,13 +1,38 @@
 .book {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.book__link__top {
+  display: block;
   width: 100%;
   background: #FFFFFF;
   border: none;
   border-radius: 8px;
-  display: flex;
-  flex-direction: column;
   padding: 16px 20px 20px 20px;
   margin-bottom: 16px;
+  z-index: 1;
+  cursor: pointer;
 }
+
+.book__link__top:hover {
+  border: 1px solid black;
+}
+
+.book__link__bottom {
+  display: block;
+  width: 100%;
+  background: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 20px 20px 20px;
+  margin-bottom: 16px;
+  text-decoration: none;
+  pointer-events: visible;
+  z-index: 1;
+}
+
 
 .book__wrapper {
   display: flex;
@@ -64,6 +89,7 @@
   justify-content: space-between;
   width: 138px;
   height: 38px;
+  z-index: 3;
   align-items: center;
 }
 

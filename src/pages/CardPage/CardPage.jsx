@@ -1,11 +1,14 @@
-import React, {useState} from 'react'
+import React, {useEffect} from 'react'
 import { CardBook } from '../../components/CardBook/CardBook.jsx'
-import { Reviev } from '../../components/Reviev/Reviev.jsx'
 import styles from './CardPage.module.css'
-import {mock} from '../../constants/mock'
+import {useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {selectBookById} from "../../store/books/selectors";
+import {BlockReviews} from "../../components/BlockReviews/BlockReviews";
 
 export const CardPage = () => {
-  const [dataBook, setDataBook] = useState(mock[0])
+  const {id} = useParams()
+  const dataBook = useSelector((state) => selectBookById(state, id))
 
   return (
     <div className={styles.card}>
@@ -18,6 +21,7 @@ export const CardPage = () => {
               genre={dataBook.genres[0]}
               title={dataBook.title}
               key={dataBook.id}
+              id={dataBook.id}
               positionCounter='bottom'
           />
         </div>
@@ -26,11 +30,7 @@ export const CardPage = () => {
           <p className={styles.card__annotation__text}>{dataBook.annotation.substr(0, 400)}</p>
           </div>
         </div>
-      <div className={styles.revievs}>
-        {
-          mock[0].comments.map(val => <Reviev text={val.text} key={val.id} name={val.name} rating={val.rating}/>)
-        }
-      </div>
+      <BlockReviews key={id} id={id}/>
     </div>
   )
 } 
