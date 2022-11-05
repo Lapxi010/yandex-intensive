@@ -1,4 +1,4 @@
-const reply = (res, body, timeout = 1000, status = 200) => {
+const reply = (res, body, timeout = 500, status = 200) => {
   return setTimeout(() => {
     res.status(status).json(body);
   }, timeout);

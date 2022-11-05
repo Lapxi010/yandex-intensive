@@ -7,7 +7,7 @@ import {loadCategoryIfNotExist} from "../../store/category/loadCategoryIfNotExis
 import {selectActiveCategory, selectCategories, selectCategoryIsSuccess} from "../../store/category/selectors";
 import {categorySlice} from '../../store/category/index'
 import {loadBooksIfNotExist} from "../../store/books/loadBooksIfNotExist";
-import {selectBooks, selectBooksIsSuccess} from "../../store/books/selectors";
+import {selectBooksByCategory, selectBooksIsSuccess} from "../../store/books/selectors";
 import Loading from "../../assets/loading.svg";
 
 
@@ -15,7 +15,7 @@ export const CatalogPage = () => {
     const dispatch = useDispatch();
     const categories = useSelector((state) => selectCategories(state));
     const activeCategory = useSelector((state) => selectActiveCategory(state))
-    const books = useSelector((state) => selectBooks(state))
+    const books = useSelector((state) => selectBooksByCategory(state, activeCategory.name))
     const statusCategory = useSelector((state) => selectCategoryIsSuccess(state))
     const statusBooks = useSelector((state) => selectBooksIsSuccess(state))
 
@@ -25,7 +25,9 @@ export const CatalogPage = () => {
 
     useEffect(() => {
         if (activeCategory.id !== '' && activeCategory.id !== undefined) {
-            dispatch(loadBooksIfNotExist(activeCategory.id))
+            if (books.length === 0) {
+                dispatch(loadBooksIfNotExist(activeCategory.id))
+            }
         }
     }, [activeCategory])
 
@@ -50,10 +52,9 @@ export const CatalogPage = () => {
                 </ul>
             </aside>
             {
-                statusBooks || books !== undefined ?
+                statusBooks  ?
                  <section className={styles.books}>
                      {books
-                         .filter((categorie) => categorie.categorie === activeCategory.name)
                          .map((val) => (
                              <CardBook
                                  rating={val.rating}

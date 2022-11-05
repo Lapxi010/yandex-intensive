@@ -7,3 +7,8 @@ export const selectBooks = (state) => Object.values(selectBooksModule(state).ent
 export const selectBookById = (state, bookId) => selectBooksModule(state).entities[bookId]
 
 export const selectBooksIsSuccess = (state) => selectBooksModule(state).status === Statuses.success
+
+export const selectBooksByCategory = (state, CategoryName) => {
+    let books = selectBooks(state)
+    return books.filter(val => val.categorie === CategoryName)
+}

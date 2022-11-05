@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './CardBook.module.css'
-import Minus from '../../assets/Icons-Vectorminus.svg'
-import Plus from '../../assets/Icons-Vectorplus.svg'
+import Minus from '../../assets/Minus.svg'
+import Plus from '../../assets/Plus.svg'
 import {StarsBlock} from "../StarsBlock/StarsBlock";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
