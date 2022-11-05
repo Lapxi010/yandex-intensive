@@ -25,4 +25,29 @@
   flex-direction: column;
 }
 
+.load {
+  width: 100%;
+  height: calc(100vh - 118px - 216px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.load__img {
+  animation: ease-in load 1s infinite;
+  width: 100px;
+  height: 100px;
+  transform: rotate(0deg);
+}
+
+@keyframes load {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 

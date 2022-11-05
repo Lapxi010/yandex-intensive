@@ -1,12 +1,33 @@
-.book {
+.wrapper{
   width: 100%;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.book__simple {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
   background: #FFFFFF;
   border: none;
   border-radius: 8px;
+  padding: 16px 20px 20px 20px;
+  width: 100%;
+}
+.book__link {
   display: flex;
   flex-direction: column;
+  z-index: 1;
+  background: #FFFFFF;
+  border: none;
+  border-radius: 8px;
   padding: 16px 20px 20px 20px;
-  margin-bottom: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.book__link:hover {
+  box-shadow: -1px 5px 11px 0px rgba(0,0,0,0.75);
 }
 
 .book__wrapper {
@@ -56,6 +77,10 @@
 .book__rightSide {
   display: flex;
   align-items: center;
+  position: absolute;
+  right: 20px;
+  height: 100%;
+  z-index: 100;
 }
 
 .book__counter {
@@ -64,6 +89,7 @@
   justify-content: space-between;
   width: 138px;
   height: 38px;
+  z-index: 3;
   align-items: center;
 }
 

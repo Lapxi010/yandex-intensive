@@ -8,7 +8,7 @@
 .card__top {
   display: flex;
   flex-direction: row;
-  height: 216px;
+  min-height: 216px;
 }
 
 .card__CardBookWrapper {
@@ -41,7 +41,34 @@
 }
 
 .revievs {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 40px;
+}
+
+.load {
+  width: 100%;
+  height: calc(100vh - 118px - 216px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.load__img {
+  animation: ease-in load 1s infinite;
+  width: 100px;
+  height: 100px;
+  transform: rotate(0deg);
+}
+
+@keyframes load {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
