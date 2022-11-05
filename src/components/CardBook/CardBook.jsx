@@ -48,12 +48,16 @@ export const CardBook = ({title, author, genre, rating, price, positionCounter, 
             } : {alignItems: 'flex-end', bottom: '20px'}}>
                 <div className={styles.book__counter}>
                     <button
+                        type='button'
+                        aria-label='minus'
                         disabled={!count}
                         onClick={() => dispatch(basketSlice.actions.removeFilm(id))}
                         className={styles.book__counter__btn}
                     ><img src={Minus} alt="minus"/></button>
                     <span className={styles.book__counter__text}>{count || 0}</span>
                     <button
+                        type='button'
+                        aria-label='plus'
                         onClick={() => dispatch(basketSlice.actions.addFilm(id))}
                         className={styles.book__counter__btn}
                     ><img src={Plus} alt="plus"/></button>
