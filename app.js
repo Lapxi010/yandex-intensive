@@ -49,7 +49,7 @@ const input = AsyncArray([
 solution(input).then(result => {
   const answer = [8, 15, 16, 42, 23, 4];
   const isEqual = String(answer) === String(result);
-
+  console.log(result)
   if (isEqual) {
     console.log('OK');
   } else {
@@ -97,18 +97,22 @@ async function solution(input) {
         if (typeof el !== 'object') {
           answer.push(el)
         } else {
-          tmp(el).then(val => answer.push(val))
+          tmp(el).then(v => answer.push(v))
         }
       })
     }
   })
 
-  let res = []
-  for (let i of answer) {
-    if (typeof i === 'Array') {
-      res.push(OpenArr(i))
-    } else {
-      res.push(i)
+
+  return answer
+  /*
+    let res = []
+    for (let i of answer) {
+      if (typeof i === 'Array') {
+        res.push(OpenArr(i))
+      } else {
+        res.push(i)
+      }
     }
-  }
+    */
 }
