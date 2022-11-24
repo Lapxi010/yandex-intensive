@@ -1,110 +1,114 @@
-function MyAwesomeSet(array) {
+'use strict';
 
-  const res = []
+(() => {
+  const timeoutMS = 100;
 
-  if (array) {
-    array.map(val => {
-      if (!res.includes(val)) {
-        res.push(val)
-      }
-    })
-  }
-  return {
-    add(val) {
-      if (!res.includes(val)) {
-        res.push(val)
-      }
-      return this
-    },
-    get size() {
-      return res.reduce(acc => acc + 1, 0)
-    },
-    has(val) {
-      if (!res.includes(val)) {
-        return false
-      }
-      return true
-    },
-    delete(val) {
-      let c = 0;
-      for (let i of res) {
-        if (i === val || (res.indexOf(val) === -1 && Number.isNaN(val) && Number.isNaN(res[c]))) {
-          console.log(i)
-          res.splice(c, 1)
-          return true
-        }
-        c++
-      }
-      return false
-    },
-    clear() {
-      res.map((_, i) => { delete res(i) })
+  const _async = (fn, cb) => {
+    setTimeout(() => {
+      cb(fn());
+    }, Math.random() * timeoutMS);
+  };
+
+  const AsyncArray = function(a = []) {
+    if (!new.target) {
+      return new AsyncArray(a);
     }
 
+    this.read = (index, cb) =>
+      _async(() => a[index], cb);
+
+    this.size = (cb) =>
+      _async(() => a.length, cb);
   };
+
+  Object.freeze(AsyncArray);
+  globalThis.AsyncArray = AsyncArray;
+})();
+
+const input = AsyncArray([
+  8,
+  AsyncArray([
+    15,
+    16,
+  ]),
+  AsyncArray([
+    AsyncArray([
+      AsyncArray([
+        42,
+        AsyncArray([
+          AsyncArray([]),
+          23,
+        ]),
+      ]),
+    ]),
+    4,
+  ]),
+]);
+
+
+solution(input).then(result => {
+  const answer = [8, 15, 16, 42, 23, 4];
+  const isEqual = String(answer) === String(result);
+
+  if (isEqual) {
+    console.log('OK');
+  } else {
+    console.log('WRONG');
+  }
+});
+
+
+const tmp = async (input) => {
+  let answer = []
+
+  await input.size(async (v) => {
+    for (let i = 0; i < v; i++) {
+      await input.read(i, (el) => {
+        if (typeof el !== 'object') {
+          answer.push(el)
+        } else {
+          tmp(el).then(val => answer.push(val))
+        }
+      }
+      )
+    }
+  })
+
+  return answer
 }
-let array = [1, 2, 3, 4, 5]
-let set = new MyAwesomeSet(array)
-console.log(set.size === array.length)
 
-let array1 = [4, 4, 8, 15, 15, 16, 23, 42]
-let set1 = new MyAwesomeSet(array1)
-console.log(set1.size === new Set(array1).size)
+const OpenArr = (arr) => {
+  let res = []
+  for (let i of answer) {
+    if (typeof i === 'Array') {
+      res.push(OpenArr(i))
+    } else {
+      res.push(i)
+    }
+  }
+  return res
+}
 
-let object = {}
-array = [{}, object, 42, NaN, undefined]
-set = MyAwesomeSet(array)
+async function solution(input) {
+  let answer = []
+  await input.size(async (v) => {
+    for (let i = 0; i < v; i++) {
+      await input.read(i, (el) => {
+        if (typeof el !== 'object') {
+          answer.push(el)
+        } else {
+          tmp(el).then(val => answer.push(val))
+        }
+      })
+    }
+  })
 
-console.assert(set.has(23) === false, 'has not 23')
-console.assert(set.has({}) === false, 'has not {}')
-
-console.assert(set.has(42) === true, 'has 42')
-console.assert(set.has(NaN) === true, 'has NaN')
-console.assert(set.has(object) === true, 'has object')
-console.assert(set.has(undefined) === true, 'has undefined')
-
-
-set.add(NaN).add(undefined)
-
-console.assert(set.size === array.length, 'add NaN & undefined')
-
-set.add({})
-array.push({})
-console.assert(set.size === array.length, 'add {}')
-
-
-res = set.delete(23)
-console.assert(res === false, '23 is not deleted')
-console.assert(set.size === array.length, 'same size after delete 23')
-
-res = set.delete({})
-console.assert(res === false, '{} is not deleted')
-console.assert(set.size === array.length, 'same size after delete {}')
-
-res = set.delete(42)
-console.assert(res === true, '42 is deleted')
-console.assert(set.has(42) === false, 'do not includes 42')
-
-res = set.delete(object)
-console.assert(res === true, 'object is deleted')
-console.assert(set.has(object) === false, 'do not includes object')
-
-res = set.delete(NaN)
-console.assert(res === true, 'NaN is deleted')
-console.assert(set.has(NaN) === false, 'do not includes NaN')
-
-res = set.delete(undefined)
-console.assert(res === true, 'undefined is deleted')
-console.assert(set.has(undefined) === false, 'do not includes undefined')
-
-set.clear()
-console.assert(set.size === 0, 'empty after clear')
-
-set.add(4).add(4).add(8).add(15).add(16).add(23).add(42).add(42)
-console.assert(set.size === 6, 'add handels not unique values')
-
-set.clear()
-set.add({}).add({}).add({})
-set.add(object).add(object).add(object).add(object).add(object)
-console.assert(set.size === 4, 'add handels not unique refs')
-
+  let res = []
+  for (let i of answer) {
+    if (typeof i === 'Array') {
+      res.push(OpenArr(i))
+    } else {
+      res.push(i)
+    }
+  }
+}
