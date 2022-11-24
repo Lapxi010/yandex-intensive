@@ -57,62 +57,60 @@ solution(input).then(result => {
   }
 });
 
+function promisify(f) {
+  return function (...args) {
+    return new Promise((resolve) => {
+      args.push((res) => resolve(res));
+      f.call(this, ...args);
+    });
+  };
+}
 
 const tmp = async (input) => {
   let answer = []
+  if(typeof input !== 'object') {
+    return [input]
+  }
+     input.size(async (v) => {
+      for (let i = 0; i < v; i++) {
+          let a = promisify(input.read)
+          await  a(i).then(el => tmp(el).then((val) => {
+            answer.push(val)
+          }))
 
-  await input.size(async (v) => {
-    for (let i = 0; i < v; i++) {
-      await input.read(i, (el) => {
-        if (typeof el !== 'object') {
-          answer.push(el)
-        } else {
-          tmp(el).then(val => answer.push(val))
-        }
       }
-      )
-    }
-  })
-
+    })
   return answer
 }
 
-const OpenArr = (arr) => {
-  let res = []
-  for (let i of answer) {
-    if (typeof i === 'Array') {
-      res.push(OpenArr(i))
-    } else {
-      res.push(i)
-    }
-  }
-  return res
-}
 
 async function solution(input) {
-  let answer = []
-  await input.size(async (v) => {
-    for (let i = 0; i < v; i++) {
-      await input.read(i, (el) => {
-        if (typeof el !== 'object') {
-          answer.push(el)
-        } else {
-          tmp(el).then(v => answer.push(v))
-        }
-      })
+  const openArr = async (arr) => {
+    let res = []
+    for(let i of arr) {
+      if(typeof i !== 'object'){
+        res.push(await i)
+      }else {
+        res.push(...await openArr(i))
+      }
     }
+    return res
+  }
+
+  let res = new Promise( (resolve, reject) => {
+    let answer = []
+    input.size(async (v) => {
+      for (let i = 0; i < v; i++) {
+        let a = promisify(input.read)
+        await a(i).then(el => tmp(el).then(val => {
+          answer.push(val)
+        }))
+      }
+    })
+    resolve(openArr(answer))
   })
 
 
-  return answer
-  /*
-    let res = []
-    for (let i of answer) {
-      if (typeof i === 'Array') {
-        res.push(OpenArr(i))
-      } else {
-        res.push(i)
-      }
-    }
-    */
+
+  Promise.all([res]).then(val => console.log(val))
 }
