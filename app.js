@@ -46,16 +46,53 @@ const input = AsyncArray([
 ]);
 
 
+
 solution(input).then(result => {
   const answer = [8, 15, 16, 42, 23, 4];
   const isEqual = String(answer) === String(result);
-  console.log(result)
   if (isEqual) {
     console.log('OK');
   } else {
     console.log('WRONG');
   }
 });
+
+async function openArr (arr){
+  let res = []
+  if (arr !== undefined) {
+    for (let i of arr) {
+      if (typeof i !== 'object') {
+        res.push(i)
+      } else {
+        res.push(...await openArr(i))
+      }
+    }
+  }
+
+  return res
+}
+
+
+const tmp = async (input) => {
+  let answer = []
+  if(typeof input !== 'object') {
+    return [input]
+  }
+  let s = []
+  await input.size(async (v) => {
+    for(let i = 0; i < v; i++) {
+      s.push(i)
+    }
+    for await (let k of s) {
+      let a = promisify(input.read)
+      await a(k).then(async el => await tmp(el).then((val) => {
+        answer.push( val)
+      }))
+
+    }
+  })
+  return answer
+}
 
 function promisify(f) {
   return function (...args) {
@@ -66,51 +103,27 @@ function promisify(f) {
   };
 }
 
-const tmp = async (input) => {
+async function prepareDate(input) {
   let answer = []
-  if(typeof input !== 'object') {
-    return [input]
-  }
-     input.size(async (v) => {
-      for (let i = 0; i < v; i++) {
-          let a = promisify(input.read)
-          await  a(i).then(el => tmp(el).then((val) => {
-            answer.push(val)
-          }))
-
-      }
-    })
+  let s = []
+  await input.size(async (v) => {
+    for(let i = 0; i < v; i++) {
+      s.push(i)
+    }
+    for await (let k of s) {
+      let a = promisify(input.read)
+      await a(k).then(async el => await tmp(el).then(val => {
+        answer.push(val)
+      }))
+    }
+  })
   return answer
 }
 
-
 async function solution(input) {
-  const openArr = async (arr) => {
-    let res = []
-    for(let i of arr) {
-      if(typeof i !== 'object'){
-        res.push(await i)
-      }else {
-        res.push(...await openArr(i))
-      }
-    }
-    return res
-  }
-
-  let res = new Promise( (resolve, reject) => {
-    let answer = []
-    input.size(async (v) => {
-      for (let i = 0; i < v; i++) {
-        let a = promisify(input.read)
-        await a(i).then(el => tmp(el).then(val => {
-          answer.push(val)
-        }))
-      }
-    })
-    resolve(openArr(answer))
-  })
-
-
-
-  Promise.all([res]).then(val => console.log(val))
+  let a = await prepareDate(input)
+  console.log(a)
+  let b = await openArr(a)
+  console.log(b)
+  return b
 }
